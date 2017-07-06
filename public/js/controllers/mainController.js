@@ -9,22 +9,20 @@ app.controller('myCtrl', function($scope, $uibModal) {
 
   $scope.openAddBeer = function() {
 
-    var modalInstance = $uibModal.open({
+    $uibModal.open({
       ariaLabelledBy: 'modal-title',
       ariaDescribedBy: 'modal-body',
       templateUrl: 'addBeerTemplate.html',
       controller: function($scope, $uibModalInstance) {
         $scope.addBeer = function() {
-          $uibModalInstance.close($scope);
+          $uibModalInstance.close({
+            name: $scope.name,
+            abv: $scope.abv
+          });
         };
       }
-    });
-
-    modalInstance.result.then(function(scope) {
-      addBeer({
-        name: scope.name,
-        abv: scope.abv
-      })
+    }).result.then(function(beer) {
+      addBeer(beer)
     }, function() {
       console.log('Modal dismissed at: ' + new Date());
     });
